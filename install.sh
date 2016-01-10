@@ -280,9 +280,9 @@ find "$webPath" -type d -exec chmod g+rwxs {} \;||die
 ############
 echo -e "\n***** Downloading most recent BrewPi codebase... *****"
 cd "$installPath"
-sudo -u brewpi git clone https://github.com/BrewPi/brewpi-script --branch "$BREWPI_SCRIPT_TAG" "$installPath"||die
+sudo -u brewpi git clone https://github.com/konr/brewpi-script --branch "$BREWPI_SCRIPT_TAG" "$installPath"||die
 cd "$webPath"
-sudo -u www-data git clone https://github.com/BrewPi/brewpi-www --branch "$BREWPI_WWW_TAG" "$webPath"||die
+sudo -u www-data git clone https://github.com/konr/brewpi-www --branch "$BREWPI_WWW_TAG" "$webPath"||die
 
 ###########
 ### If non-default paths are used, update config files accordingly
