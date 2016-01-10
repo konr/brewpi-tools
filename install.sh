@@ -76,14 +76,16 @@ echo "or shown between brackets for other questions: [default]"
 
 
 ############
-### Check whether installer is up-to-date
+### Check whether target tags are set
 ############
-echo -e "\nChecking whether this script is up to date...\n"
+echo -e "\nChecking whether target tags are set...\n"
 unset CDPATH
 myPath="$( cd "$( dirname "${BASH_SOURCE[0]}")" && pwd )"
 bash "$myPath"/update-tools-repo.sh
-if [ $? -ne 0 ]; then
-    echo "The update script was not up-to-date, but it should have been updated. Please re-run install.sh."
+if [[ -z $BREWPI_WWW_TAG ]] || [[ -z $BREWPI_SCRIPT_TAG ]]; then
+    echo "\$BREWPI_SCRIPT_TAG=$BREWPI_SCRIPT_TAG"
+    echo "\$BREWPI_WWW_TAG=$BREWPI_WWW_TAG"
+    echo "Tags are not set, where they should have been."
     exit 1
 fi
 
@@ -278,9 +280,9 @@ find "$webPath" -type d -exec chmod g+rwxs {} \;||die
 ############
 echo -e "\n***** Downloading most recent BrewPi codebase... *****"
 cd "$installPath"
-sudo -u brewpi git clone https://github.com/BrewPi/brewpi-script "$installPath"||die
+sudo -u brewpi git clone https://github.com/BrewPi/brewpi-script --branch "$BREWPI_SCRIPT_TAG" "$installPath"||die
 cd "$webPath"
-sudo -u www-data git clone https://github.com/BrewPi/brewpi-www "$webPath"||die
+sudo -u www-data git clone https://github.com/BrewPi/brewpi-www --branch "$BREWPI_WWW_TAG" "$webPath"||die
 
 ###########
 ### If non-default paths are used, update config files accordingly
